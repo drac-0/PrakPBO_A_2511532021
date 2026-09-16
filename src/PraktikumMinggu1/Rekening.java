@@ -1,4 +1,5 @@
 package PraktikumMinggu1;
+import java.text.Format;
 import java.util.*;
 
 public class Rekening {
@@ -7,14 +8,9 @@ public class Rekening {
 	double saldo;
 	
 	public Rekening(String nomor, String nama, double saldoAwal) {
-		
-			this.namaPemilik = nomor; 
-			this.nomorRekening = nama;
-			this.saldo = saldoAwal;
-		
-		
-		
-		
+		this.namaPemilik = nama; 
+		this.nomorRekening = nomor;
+		this.saldo = saldoAwal;		
 	}
 	
 	public void setorTunai(double nominal) {
@@ -47,6 +43,8 @@ public class Rekening {
 		System.out.println("Saldo Akhir : Rp" + saldo );
 		System.out.println("---------------------");
 	}
+	
+	public String getREK() {
+		return this.nomorRekening;
+	}
 }
-
-
