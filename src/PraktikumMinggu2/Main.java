@@ -73,6 +73,8 @@ public class Main {
 			System.out.println("2. Tarik Tunai");
 			System.out.println("3. Cetak informasi Rekening");
 			System.out.println("4. Cetak Mutas");
+			System.out.println("5. Informasi mengenai Tertinggi dan Terendah");
+			System.out.println("6. Cetak informasi tambahan");
 			System.out.println("0. Keluar");
 			System.out.println("Pilih menu");
 			int pilihan2 = input.nextInt();
@@ -93,12 +95,9 @@ public class Main {
 				case 2:
 					System.out.println("Masukkan nominal tarik: ");
 					double tarik = input.nextDouble();
-					akunAktif.tarikTunai(tarik);
-						
+					akunAktif.tarikTunai(tarik);	
 					break;
-					
-					
-					
+						
 				case 3:
 					akunAktif.cekInformasi();
 					break;
@@ -106,7 +105,15 @@ public class Main {
 				case 4:
 					akunAktif.CetakMutasi();
 					break;
-			
+					
+				case 5:
+					akunAktif.CetakTer();
+					break;
+					
+				case 6:
+					akunAktif.CetakInfo();
+					break;
+					
 					
 				case 0:
 					isRunning = false;
