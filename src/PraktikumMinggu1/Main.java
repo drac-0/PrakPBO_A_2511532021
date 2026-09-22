@@ -44,14 +44,16 @@ public class Main {
 				System.out.println("Masukkan no rekening: ");
 				String inputRek = input.nextLine();
 				System.out.println(inputRek);
+				int exist = 0;
 				for(int i = 0 ; i < rekAr.size(); i++) {
 					if ( rekAr.get(i).getREK().equals(inputRek)) {
-						System.out.println(rekAr.get(i).getREK().equals(inputRek));
 						DASHBOARD(isRunning, input, rekAr.get(i));
-						break;
+						exist = 1;
 					}
 				}
-				System.out.println("Akun tersebut tidak ada");
+				if (exist == 0) {
+					System.out.println("Akun tersebut tidak ada");
+				}
 				break;
 				
 			case 0:
@@ -75,12 +77,11 @@ public class Main {
 			int pilihan2 = input.nextInt();
 			input.nextLine();
 			
-			switch(pilihan2) {
-					
+			switch(pilihan2) {	
 				case 1: 	
 						System.out.println("Masukkan nominal setor: ");
 						double setor = input.nextDouble();
-						if (setor > 10000) {
+						if (setor >= 10000) {
 							akunAktif.setorTunai(setor);
 						}
 						else {
@@ -93,19 +94,14 @@ public class Main {
 				case 2:
 						System.out.println("Masukkan nominal tarik: ");
 						double tarik = input.nextDouble();
-						if (tarik > 10000) {							
-							akunAktif.tarikTunai(tarik);
-						}
-						else {
-							System.out.println("GAGAL");
-						}
+						akunAktif.tarikTunai(tarik);
+						
 					break;
 					
 					
 					
 				case 3:
 						akunAktif.cekInformasi();
-				
 					break;
 					
 				case 0:
