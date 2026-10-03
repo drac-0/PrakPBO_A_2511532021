@@ -1,4 +1,4 @@
-package PraktikumMinggu3;
+package PraktikumMinggu4;
 import java.util.*;
 
 
@@ -25,23 +25,47 @@ public class Main {
 			case 1:
 				System.out.println("Masukkan PIN awal:");
 				String pin = input.nextLine();
+				System.out.println("Masukkan saldo awal: ");
+				double saldo = input.nextDouble();				
+				input.nextLine();
+				System.out.println("Pilih opsi produk: 1. Tabungan umum | 2. Giro bisnis | 3.Rekening VIP| 4.Kartu Debit");
+				int pil = input.nextInt();
+				input.nextLine();
 				System.out.println("Masukkan no rekening: ");
 				String no = input.nextLine();
 				System.out.println("Masukkan nama pemilik: ");
 				String nama = input.nextLine();
-				System.out.println("Masukkan saldo awal: ");
-				double saldo = input.nextDouble();
 				
 				
-				
-				if (saldo >= 50000) {
-					akunAktif = new Rekening(no,nama, saldo, pin);
-					rekAr.add(akunAktif);
+				if (saldo >= 50000 && pin.length() == 6) {
+					if (pil == 1) {
+						System.out.println("Input suku bunga");
+						double sukuBunga = input.nextDouble();
+						RekeningTabungan newRT = new RekeningTabungan(no,nama, saldo, pin, sukuBunga);
+						rekAr.add(newRT);
+					}
+					else if(pil == 2) {
+						System.out.println("Input batas OverDraft	");
+						double batasO = input.nextDouble();
+						RekeningGiro newGR = new RekeningGiro(no,nama, saldo, pin, batasO);
+						rekAr.add(newGR);
+					}
+					else if(pil == 3) {
+						System.out.println("Rekening VIP dibuat");
+						RekeningVIP rVP = new RekeningVIP(no,nama,saldo,pin);
+						rekAr.add(rVP);
+					}
 				}
 				
+				else if(pin.length() != 6) {
+					System.out.println("Pin harus sepanjang 6 angka");
+					
+				}
+			
 				else {
 					System.out.println("Minimal saldo awal 50000");
 				}
+	
 				break;
 				
 			case 2:
@@ -79,6 +103,8 @@ public class Main {
 			System.out.println("3. Cetak informasi Rekening");
 			System.out.println("4. Cetak Mutas");
 			System.out.println("5. Ganti Pin");
+			System.out.println("6. Simulasi Akhir Bulan (Khusus Tabungan)");
+			System.out.println("7. Simulasi Akhir Tahun (Khusus Tabungan)");
 			System.out.println("0. Keluar");
 			System.out.println("Pilih menu");
 			int pilihan2 = input.nextInt();
@@ -137,7 +163,26 @@ public class Main {
 					akunAktif.GantiPin(pn3, pn4);
 					break;
 					
-				
+				case 6:
+					if (akunAktif instanceof RekeningTabungan) {
+						RekeningTabungan cAK = (RekeningTabungan) akunAktif;
+						cAK.tambahBungaAkhirBulan();
+					}
+					else {
+						System.out.println("Fitur Khusus Akun Tabungan");
+					}
+					break;
+					
+				case 7:
+					if (akunAktif instanceof RekeningTabungan) {
+						RekeningTabungan cAK = (RekeningTabungan) akunAktif;
+						cAK.tambahBungaAkhirTahun();
+					}
+					
+					else {
+						System.out.println("Fitur Khusus Akun Tabungan");
+					}
+					break;
 				
 
 				case 0:
