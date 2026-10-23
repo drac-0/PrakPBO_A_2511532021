@@ -1,0 +1,226 @@
+package PraktikumMinggu5;
+import java.util.*;
+
+
+public class Main {
+	public static void main(String args[]) {
+		ArrayList<Rekening> rekAr = new ArrayList<Rekening>();
+		Scanner input = new Scanner(System.in);
+		boolean isRunning = true;
+		boolean ganti= true;
+
+		System.out.println("SYTEM PERBANKAN");
+		
+		while(ganti) {
+			for (Rekening rek: rekAr) {
+				System.out.println(rek.getNomorRekening());
+			}
+			System.out.println("\nMenu Akun");
+			System.out.println("1. Buka Rekening Baru");
+			System.out.println("2. Masuk");
+			System.out.println("0. Keluar");
+			System.out.println("Pilih menu");
+			int pilihan1 = input.nextInt();
+			input.nextLine();
+			
+			switch(pilihan1) {
+			case 1:
+				System.out.println("Masukkan PIN awal:");
+				String pin = input.nextLine();
+				System.out.println("Masukkan saldo awal: ");
+				double saldo = input.nextDouble();				
+				input.nextLine();
+				System.out.println("Pilih opsi produk: 1. Tabungan umum | 2. Giro bisnis | 3.Rekening VIP| 4.Kartu Debit");
+				int pil = input.nextInt();
+				input.nextLine();
+				System.out.println("Masukkan no rekening: ");
+				String no = input.nextLine();
+				System.out.println("Masukkan nama pemilik: ");
+				String nama = input.nextLine();
+				
+				
+				if (saldo >= 50000 && pin.length() == 6) {
+					if (pil == 1) {
+						System.out.println("Input suku bunga");
+						double sukuBunga = input.nextDouble();
+						RekeningTabungan newRT = new RekeningTabungan(no,nama, saldo, pin, sukuBunga);
+						rekAr.add(newRT);
+					}
+					else if(pil == 2) {
+						System.out.println("Input batas OverDraft	");
+						double batasO = input.nextDouble();
+						RekeningGiro newGR = new RekeningGiro(no,nama, saldo, pin, batasO);
+						rekAr.add(newGR);
+					}
+					else if(pil == 3) {
+						System.out.println("Rekening VIP dibuat");
+						RekeningVIP rVP = new RekeningVIP(no,nama,saldo,pin);
+						rekAr.add(rVP);
+					}
+				}
+				
+				else if(pin.length() != 6) {
+					System.out.println("Pin harus sepanjang 6 angka");
+					
+				}
+			
+				else {
+					System.out.println("Minimal saldo awal 50000");
+				}
+	
+				break;
+				
+			case 2:
+				System.out.println("Masukkan no rekening: ");
+				String inputRek = input.nextLine();
+				System.out.println(inputRek);
+				int exist = 0;
+				for(int i = 0 ; i < rekAr.size(); i++) {
+					if ( rekAr.get(i).getREK().equals(inputRek)) {
+						DASHBOARD(isRunning, input, rekAr.get(i), rekAr);
+						exist = 1;
+					}
+				}
+				if (exist == 0) {
+					System.out.println("Akun tersebut tidak ada");
+				}
+				break;
+				
+			case 0:
+				ganti = false;
+				System.out.println("Program selesai");
+				
+			}
+		}
+		input.close();
+	}
+	
+	public static void DASHBOARD(boolean isRunning, Scanner input, Rekening akunAktif, ArrayList<Rekening> rekAr) {
+		while(isRunning) {
+	
+			System.out.println("\nMenu Utama");
+			System.out.println("1. Setor Tunai");
+			System.out.println("2. Tarik Tunai");
+			System.out.println("3. Cetak informasi Rekening");
+			System.out.println("4. Cetak Mutas");
+			System.out.println("5. Ganti Pin");
+			System.out.println("6. Simulasi Akhir Bulan (Khusus Tabungan)");
+			System.out.println("7. Simulasi Akhir Tahun (Khusus Tabungan)");
+			System.out.println("8. Transfer");
+			System.out.println("0. Keluar");
+			System.out.println("Pilih menu");
+			int pilihan2 = input.nextInt();
+			input.nextLine();
+			
+			switch(pilihan2) {	
+				case 1: 	
+					System.out.println("Masukkan nominal setor: ");
+					double setor = input.nextDouble();
+					if (setor >= 10000) {
+						akunAktif.setorTunai(setor);
+					}
+					
+					else {
+						System.out.println("Minimal setor tunai 10.000");
+					}
+					break;
+				
+				case 2:
+					System.out.println("Masukkan PIN anda");
+					String pn = input.nextLine();
+					System.out.println("Masukkan nominal tarik: ");
+					double tarik = input.nextDouble();
+					if (akunAktif.autentikasi(pn)) {
+						akunAktif.tarikTunai(tarik);	
+					}
+					
+					else {
+						System.out.println("PIN ANDA SALAH");
+					}
+					break;
+						
+				case 3:
+					akunAktif.cekInformasi();
+					break;
+					
+				case 4:
+					System.out.println("Masukkan PIN anda");
+					String pn2 = input.nextLine();
+					
+					if (akunAktif.autentikasi(pn2)) {
+						akunAktif.CetakMutasi();
+					}
+					
+					else {
+						System.out.println("PIN ANDA SALAH");
+					}
+					
+					break;
+				
+				case 5:
+					System.out.println("Masukkan PIN Lama");
+					String pn4 = input.nextLine();
+					System.out.println("Masukkan PIN baru");
+					String pn3 = input.nextLine();
+					akunAktif.GantiPin(pn3, pn4);
+					break;
+					
+				case 6:
+					if (akunAktif instanceof RekeningTabungan) {
+						RekeningTabungan cAK = (RekeningTabungan) akunAktif;
+						cAK.tambahBungaAkhirBulan();
+					}
+					else {
+						System.out.println("Fitur Khusus Akun Tabungan");
+					}
+					break;
+					
+				case 7:
+					if (akunAktif instanceof RekeningTabungan) {
+						RekeningTabungan cAK = (RekeningTabungan) akunAktif;
+						cAK.tambahBungaAkhirTahun();
+					}
+					
+					else {
+						System.out.println("Fitur Khusus Akun Tabungan");
+					}
+					break;
+					
+				case 8:
+					System.out.print("Masukkan Nomor Rekening Tujuan: ");
+					String Norek= input.nextLine();
+					
+					Rekening tujuan = null;
+				    for (Rekening rek : rekAr) {
+				        if (rek.getREK().equals(Norek)) {
+				            tujuan = rek;
+				            break;
+				        }
+				    }
+
+					if (tujuan == null) {
+						System.out.println("Tidak ada rekening dengan nomor tersebut");
+						break;
+					}
+					System.out.print("Masukkan PIN anda : ");
+					String pinn = input.nextLine();
+					System.out.println("Masukkan nominal transfer: ");
+					double tariak = input.nextDouble();
+					input.nextLine();
+					akunAktif.Transfer(tujuan, tariak, pinn);
+					break;
+					
+
+
+				case 0:
+					isRunning = false;
+					System.out.println("Sistem ditutup, terima kasih");
+					break;
+				
+				default:
+					System.out.println("Opsi tidak valid");
+			}
+		}
+	}
+
+}

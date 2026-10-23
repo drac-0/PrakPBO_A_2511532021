@@ -47,13 +47,15 @@ public class Rekening {
 		
 	}
 	
-	public void tarikTunai(double nominal) {
+	public boolean tarikTunai(double nominal) {
 		
-	    if (nominal < 10000) {
-	        System.out.println("Transaksi Gagal : Minimal nominal penarikan 10.000");
+	    if (nominal < 0) {
+	        System.out.println("Transaksi Gagal : Nominal tarik harus lebih dari 0!");
+	        return false;
 	    }
 	    else if (nominal > saldo) {
 	        System.out.println("Transaksi Gagal : Saldo tidak mencukupi. Saldo Anda: Rp" + saldo);
+	        return false;
 	    }
 	    else {
 		
@@ -63,6 +65,7 @@ public class Rekening {
 			riwayatTransaksi.add(trxBaru);
 	        System.out.println("Tarik tunai Rp" + nominal + 
 	                           " Berhasil, Saldo saat ini: Rp" + saldo);
+	        return true;
 	    }
 	}
 	
