@@ -1,40 +1,44 @@
 package shop.payment;
 
-public class EWalletPayment implements PaymentMethod{
-    private String provider;
+public class EWalletPayment implements RefundablePayment {
+    private final String provider;
     private long balance;
+
     public EWalletPayment(String provider, long balance) {
-        if (provider.isBlank() || (balance <= 0)){
-            throw new IllegalArgumentException("provider can't be empty and balance needs to be greater than 0");
+        if (provider == null || provider.isBlank()) {
+            throw new IllegalArgumentException("Provider must not be blank");
+        }
+        if (balance < 0) {
+            throw new IllegalArgumentException("Balance must not be negative");
         }
         this.provider = provider;
         this.balance = balance;
     }
 
-
-    public String getName(){
-        return "E-Wallet" + provider;
+    @Override
+    public String getName() {
+        return "E-Wallet " + provider;
     }
 
-    public long getBalance(){
+    public long getBalance() {
         return balance;
     }
 
-    @Override 
-    public boolean pay(long amount){
-        if (amount <= 0){
+    @Override
+    public boolean pay(long amount) {
+        if (amount <= 0 || amount > balance) {
             return false;
         }
-
-        else if(amount > balance){
-            return false;
-        }
-
-        else{
-            return true;
-        }
+        balance -= amount;
+        return true;
     }
 
-    
-
+    @Override
+    public boolean refund(long amount) {
+        if (amount <= 0) {
+            return false;
+        }
+        balance += amount;
+        return true;
+    }
 }

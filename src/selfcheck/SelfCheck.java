@@ -8,14 +8,6 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Automatic self check for the in-lab exercises (Latihan L1-L5).
- * It uses reflection, so this file compiles even when your classes are not finished yet.
- *
- * Run: java -cp out selfcheck.SelfCheck
- *
- * Do NOT modify this file.
- */
 public class SelfCheck {
 
     private static int passed = 0;
@@ -178,7 +170,6 @@ public class SelfCheck {
                         return true;
                     }
                 } catch (ClassNotFoundException e) {
-                    // try the next number
                 }
             }
             return false;
@@ -192,8 +183,6 @@ public class SelfCheck {
             }
         }
     }
-
-    // ---------------------------------------------------------------- helpers
 
     @FunctionalInterface
     private interface Check {
@@ -260,7 +249,7 @@ public class SelfCheck {
 
     private static Object call(Object target, String method, Class<?>[] types, Object... args) throws Exception {
         Method m = target.getClass().getMethod(method, types);
-        m.setAccessible(true); // public methods of non-public classes (e.g. anonymous) need this
+        m.setAccessible(true);
         return m.invoke(target, args);
     }
 

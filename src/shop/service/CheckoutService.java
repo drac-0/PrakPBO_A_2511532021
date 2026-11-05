@@ -1,7 +1,9 @@
 package shop.service;
+
 import java.util.List;
 import shop.model.Product;
 import shop.payment.PaymentMethod;
+import shop.payment.RefundablePayment;
 import shop.shipping.Shippable;
 import shop.shipping.ShippingService;
 
@@ -13,6 +15,7 @@ public class CheckoutService {
         }
         return total;
     }
+
     public int totalWeight(List<Product> items) {
         int grams = 0;
         for (Product product : items) {
@@ -22,7 +25,24 @@ public class CheckoutService {
         }
         return grams;
     }
-        // TODO total(List<Product> items, ShippingService shipping)
-        // TODO checkout(List<Product> items, ShippingService shipping, PaymentMethod payment)
 
+    public long total(List<Product> items, ShippingService shipping) {
+        return subtotal(items) + shipping.calculateCost(totalWeight(items));
+    }
+
+    public long grandTotal(List<Product> items, ShippingService shipping, PaymentMethod payment) {
+        return total(items, shipping) + payment.adminFee(total(items, shipping));
+    }
+
+    public boolean checkout(List<Product> items, ShippingService shipping, PaymentMethod payment) {
+        if (items == null || items.isEmpty()) {
+            return false;
+        }
+        long totalAmount = grandTotal(items, shipping, payment);
+        return payment.pay(totalAmount);
+    }
+
+    public boolean refund(RefundablePayment payment, long amount) {
+        return payment.refund(amount);
+    }
 }

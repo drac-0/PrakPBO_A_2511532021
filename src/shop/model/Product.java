@@ -3,10 +3,10 @@ package shop.model;
 public abstract class Product {
     private final String sku;
     private final String name;
-    private final long price; // in rupiah
+    private final long price;
     protected Product(String sku, String name, long price) {
         if (sku == null || sku.isBlank()) {
-        throw new IllegalArgumentException("SKU must not be blank");
+            throw new IllegalArgumentException("SKU must not be blank");
         }
         if (name == null || name.isBlank()) {
             throw new IllegalArgumentException("Name must not be blank");

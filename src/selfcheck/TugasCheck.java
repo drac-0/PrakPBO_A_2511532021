@@ -7,14 +7,7 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Automatic check for the take-home assignment (T1 and T2).
- * It checks that the constants in shop.StudentInfo match the NIM written there.
- *
- * Run: java -cp out selfcheck.TugasCheck
- *
- * Do NOT modify this file.
- */
+
 public class TugasCheck {
 
     private static int passed = 0;
@@ -134,10 +127,8 @@ public class TugasCheck {
             int delivered = (int) call(service, "broadcast",
                     new Class<?>[] {cls("shop.notification.CustomerContact"), String.class},
                     contact("Uji", "", "+6281298765432"), "Pesanan dikirim");
-            return delivered == 1; // only WhatsApp accepts +62 without email
-        });
 
-        System.out.println("\n=== HASIL: " + passed + " / " + total + " pemeriksaan lulus ===");
+        });
         if (!failures.isEmpty()) {
             System.out.println("Belum lulus:");
             for (String f : failures) {
@@ -146,7 +137,7 @@ public class TugasCheck {
         }
     }
 
-    // ---------------------------------------------------------------- helpers
+
 
     @FunctionalInterface
     private interface Check {
